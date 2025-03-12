@@ -80,6 +80,7 @@ function App() {
         <WeatherDetailes icon={icon} temp={temp} city={city} 
         country={country} lat={lat} log ={log} humidity={humidity} wind={wind}/>
        
+       <p className="copyright">Designed by <span>Aathi</span></p>
       </div>
     </>
   )
