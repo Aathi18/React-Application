@@ -51,3 +51,83 @@ body{
 .search-icon img{
   margin-top: 5px;
 }
+
+.image{
+  text-align: center;
+  height: 150px;
+  padding: 10px;
+}
+
+.image img{
+  width: 160px;
+  height: 160px;
+}
+
+.temp,
+.location,
+.country{
+  font-size: 30px;
+  margin-top: 5px;
+  color: #333;
+  text-transform: uppercase;
+  text-align: center;
+  
+}
+.temp{
+  font-weight: 500px;
+}
+.location{
+  font-weight: 400px;
+  font-size: 40px;
+  color: #ffbc00;
+}
+.country{
+  font-weight: 500;
+  font-size: 18px;
+  color: #888;
+}
+.cord{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  margin: 10px;
+  text-align: center;
+}
+
+.cord div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+
+}
+
+.cord div span{
+  font-size: 14px;
+}
+.humidity-presentage,
+.wind-presentage,
+.cord div span:nth-child(2)
+{
+  font-size: 18px;
+  font-weight: bold;
+  color: #666;
+  padding-top: 5px;
+}
+
+.data-container{
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-between;
+}
+
+.element{
+  text-align: center;
+}
+
+.text{
+  font-size: 12px;
+  color: #888;
+}
