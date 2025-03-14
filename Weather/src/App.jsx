@@ -52,6 +52,7 @@ const WeatherDetailes = ({icon,temp,city,country,lat,log,humidity,wind})=>{
 
 }
 function App() {
+      let api_key = "f6c1f975a09dae8b75ae3a438576b92d";
   const [icon,setIcon] = useState(CloudIcon);
   const [temp,setTemp] = useState(0);
   const [city,setCity] = useState("Kandy");
@@ -61,7 +62,9 @@ function App() {
   const [humidity,setHumidity] = useState(0);
   const [wind,setWind] = useState(0);
 
-
+const search = async () => {
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=kandy&appid=${api_key}&units=Metric`;
+};
 
 
   return (
