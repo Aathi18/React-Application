@@ -52,7 +52,8 @@ const WeatherDetailes = ({icon,temp,city,country,lat,log,humidity,wind})=>{
 
 }
 function App() {
-      let api_key = "f6c1f975a09dae8b75ae3a438576b92d";
+  let api_key = "f6c1f975a09dae8b75ae3a438576b92d";
+  const [text,setText] = useState("Kandy");
   const [icon,setIcon] = useState(CloudIcon);
   const [temp,setTemp] = useState(0);
   const [city,setCity] = useState("Kandy");
@@ -61,9 +62,35 @@ function App() {
   const [log,setLog] = useState(0);
   const [humidity,setHumidity] = useState(0);
   const [wind,setWind] = useState(0);
+  const [cityNotFound, setCityNotFound] = useState(false);
+  const [loading,setLoading] = useState(false);
 
 const search = async () => {
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=kandy&appid=${api_key}&units=Metric`;
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${text}&appid=${api_key}&units=Metric`;
+
+  try{
+        let res = await fetch(url);
+        let data = await res.json();
+       // console.log(data);
+       if(data.cod ==="404"){
+        console.error("City Not Found");
+       }
+
+  }catch(error){
+      console.error("error occurred",error.message);
+  }finally{
+      setLoading(false);
+  }
+};
+
+const handleCity = (e) =>{
+  setText(e.target.value);
+};
+
+const handleKeyDown =(e) =>{
+    if(e.key === "Enter"){
+      search();
+    }
 };
 
 
@@ -73,9 +100,12 @@ const search = async () => {
         <div className='input-container'>
           <input type="text"
             className='CityInput'
-            placeholder='Search City'
+            placeholder='Search City' 
+            onChange={handleCity}
+            value={text}
+            onKeyDown={handleKeyDown}
           />
-          <div className='search-icon'>
+          <div className='search-icon' onClick={()=>search()}>
             <img src={SearchIcon} alt="Search" />
           </div>
 
