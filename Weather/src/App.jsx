@@ -8,7 +8,7 @@ import ClearIcon from "./assets/clear.jpg";
 import SnowIcon from "./assets/snow.jpg";
 import WindIcon from "./assets/wind2.png";
 
-const WeatherDetailes = ({icon,temp,city,country,lat,log,humidity,wind})=>{
+const WeatherDetailes = ({icon,temp,city,country,lat,lon,humidity,wind})=>{
     return(
       <>
       <div className='image'>
@@ -23,8 +23,8 @@ const WeatherDetailes = ({icon,temp,city,country,lat,log,humidity,wind})=>{
           <span>{lat}</span>
         </div>
         <div>
-          <span className="log">longitude</span>
-          <span>{log}</span>
+          <span className="lon">longitude</span>
+          <span>{lon}</span>
         </div>
       </div>
 
@@ -59,13 +59,14 @@ function App() {
   const [city,setCity] = useState("Kandy");
   const [country,setCountry] = useState("SriLanka");
   const [lat,setLat] = useState(0);
-  const [log,setLog] = useState(0);
+  const [lon,setLon] = useState(0);
   const [humidity,setHumidity] = useState(0);
   const [wind,setWind] = useState(0);
   const [cityNotFound, setCityNotFound] = useState(false);
   const [loading,setLoading] = useState(false);
 
 const search = async () => {
+  setLoading(true);
   let url = `https://api.openweathermap.org/data/2.5/weather?q=${text}&appid=${api_key}&units=Metric`;
 
   try{
@@ -74,7 +75,17 @@ const search = async () => {
        // console.log(data);
        if(data.cod ==="404"){
         console.error("City Not Found");
+        setCityNotFound(true);
+        setLoading(false);
+        return;
        }
+      setHumidity(data.main.humidity);
+      setWind(data.wind.speed);
+      setTemp(Math.floor(data.main.temp));
+      setCity(data.name);
+      setCountry(data.sys.country);
+      setLat(data.coord.lat);
+      setLon(data.coord.lon);
 
   }catch(error){
       console.error("error occurred",error.message);
@@ -111,7 +122,7 @@ const handleKeyDown =(e) =>{
 
         </div>
         <WeatherDetailes icon={icon} temp={temp} city={city} 
-        country={country} lat={lat} log ={log} humidity={humidity} wind={wind}/>
+        country={country} lat={lat} lon ={lon} humidity={humidity} wind={wind}/>
        
        <p className="copyright">Designed by <span>Aathi</span></p>
       </div>
