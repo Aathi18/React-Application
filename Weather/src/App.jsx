@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import SearchIcon from "./assets/search.png";
-import CloudIcon from "./assets/cloud.jpg";
-import DrizzleIcon from "./assets/drizzle.png";
+import CloudIcon from "./assets/cloud.png";
+import DrizzleIcon from "./assets/drizzle1.png";
 import HumidityIcon from "./assets/humidity3.png";
-import ClearIcon from "./assets/clear.jpg";
+import ClearIcon from "./assets/clear.png";
 import SnowIcon from "./assets/snow.jpg";
 import WindIcon from "./assets/wind2.png";
+import RainIcon from "./assets/rain.png";
+
 
 const WeatherDetailes = ({icon,temp,city,country,lat,lon,humidity,wind})=>{
     return(
@@ -51,19 +53,37 @@ const WeatherDetailes = ({icon,temp,city,country,lat,lon,humidity,wind})=>{
     );
 
 }
+
 function App() {
   let api_key = "f6c1f975a09dae8b75ae3a438576b92d";
   const [text,setText] = useState("Kandy");
   const [icon,setIcon] = useState(CloudIcon);
   const [temp,setTemp] = useState(0);
-  const [city,setCity] = useState("Kandy");
-  const [country,setCountry] = useState("SriLanka");
+  const [city,setCity] = useState("");
+  const [country,setCountry] = useState("");
   const [lat,setLat] = useState(0);
   const [lon,setLon] = useState(0);
   const [humidity,setHumidity] = useState(0);
   const [wind,setWind] = useState(0);
   const [cityNotFound, setCityNotFound] = useState(false);
   const [loading,setLoading] = useState(false);
+  const [error,SetError] = useState(null);
+  const weatherIconMap ={
+        "01d":ClearIcon,
+        "01n":ClearIcon,
+        "02d":CloudIcon,
+        "02n":CloudIcon,
+        "03d":DrizzleIcon,
+        "03n":DrizzleIcon,
+        "04d":DrizzleIcon,
+        "04n":DrizzleIcon,
+        "09d":RainIcon,
+        "09n":RainIcon,
+        "10d":RainIcon,
+        "10n":RainIcon,
+        "13d":SnowIcon,
+        "13n":SnowIcon,
+  };
 
 const search = async () => {
   setLoading(true);
@@ -86,9 +106,13 @@ const search = async () => {
       setCountry(data.sys.country);
       setLat(data.coord.lat);
       setLon(data.coord.lon);
+      const weatherIconCode = data.weather[0].icon;
+      setIcon(weatherIconMap[weatherIconCode]|| ClearIcon);
+      setCityNotFound(false);
 
   }catch(error){
       console.error("error occurred",error.message);
+      SetError("error occured when fetch weather data");
   }finally{
       setLoading(false);
   }
@@ -104,6 +128,10 @@ const handleKeyDown =(e) =>{
     }
 };
 
+useEffect(function (){
+  search();
+
+},[]);
 
   return (
     <>
@@ -121,8 +149,14 @@ const handleKeyDown =(e) =>{
           </div>
 
         </div>
-        <WeatherDetailes icon={icon} temp={temp} city={city} 
-        country={country} lat={lat} lon ={lon} humidity={humidity} wind={wind}/>
+       
+       
+       {loading && <div className="loading-message">Loading...</div>}
+       {error &&<div className="error-message">{error}</div>}
+       {cityNotFound && <div className="city-not-found">City Not Found</div>}
+
+       {!loading && !cityNotFound && <WeatherDetailes icon={icon} temp={temp} city={city} 
+        country={country} lat={lat} lon ={lon} humidity={humidity} wind={wind}/>}
        
        <p className="copyright">Designed by <span>Aathi</span></p>
       </div>
